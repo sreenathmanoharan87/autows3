@@ -1,0 +1,24 @@
+---
+- name: DEPLOY AS3 DECLARATION
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars:
+    uri_method: POST
+  vars_files:
+    # for MAC - ../big_creds.yaml
+    - /mnt/c/Users/ManoharanS/Documents/Projects/creds/big_creds.yaml
+
+  tasks:
+  - name: MyAS3Declaration
+    uri:
+      url: https://18.207.9.168/mgmt/shared/appsvcs/declare
+      user: "{{ bigip_user }}"
+      password: "{{ bigip_pass }}"
+      method: "{{ uri_method }}"
+      body: "{{ lookup('file','as3-declaration.json') }}"
+      force_basic_auth: yes
+      status_code: 200
+      body_format: json
+      validate_certs: no
